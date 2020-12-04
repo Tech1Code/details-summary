@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Details Summary
-// @version      0.0.2
+// @version      0.0.3
 // @downloadURL  https://raw.githubusercontent.com/Tech1Code/details-summary/main/script.js
 // @updateURL    https://raw.githubusercontent.com/Tech1Code/details-summary/main/script.js   
 // @match        https://prkar.mcls.gov.ir/apps/tasklist/inbox/task?taskId=*
@@ -120,8 +120,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
                 switch (_a.label) {
                     case 0:
                         content = [
-                            fixLocale(document.querySelector('#firstName').value + " " + document.querySelector('#lastName').value),
-                            fixLocale(document.querySelector('#insuranceNumber').value),
+                            document.querySelector('#firstName').value + " " + document.querySelector('#lastName').value,
+                            document.querySelector('#insuranceNumber').value,
                             document.querySelector('#eevpnmp div.form-group > div:nth-child(1) label input').checked
                                 ? 'موافق'
                                 : (document.querySelector('#eevpnmp div.form-group > div:nth-child(2) label input').checked
@@ -129,15 +129,18 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
                                     : (document.querySelector('#eevpnmp div.form-group > div:nth-child(3) label input').checked
                                         ? 'نقص مدرک'
                                         : 'عدم اعلام نظر')),
-                            fixLocale(document.querySelector('div.formio-component-causeOfLosingJob div span').textContent),
-                            fixLocale(new Date(document.querySelector('#unemployStart').value).toLocaleDateString("fa-IR", { year: 'numeric', month: '2-digit', day: '2-digit' })),
-                            fixLocale(document.querySelector('#ptidNationalCd').value),
-                            fixLocale(document.querySelector('#mobileNumber').value)
+                            document.querySelector('div.formio-component-causeOfLosingJob div span').textContent,
+                            new Date(document.querySelector('#unemployStart').value).toLocaleDateString("fa-IR", { year: 'numeric', month: '2-digit', day: '2-digit' }),
+                            document.querySelector('#ptidNationalCd').value,
+                            document.querySelector('#mobileNumber').value,
+                            document.querySelector('#shabaNumber').value,
+                            document.querySelector('#bank').value,
                         ].join('\t');
                         if (content.length === 0) {
                             displayMessage('خطا در استخراج اطلاعات', false);
                             return [2 /*return*/];
                         }
+                        content = fixLocale(content);
                         textArea.textContent = content;
                         _a.label = 1;
                     case 1:
@@ -174,7 +177,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function fixLocale(str) {
         return str
             .replace(/[۰-۹]/g, function (w) { return (w.charCodeAt(0) - 0x06f0).toString(); })
-            .replaceAll('ك', 'ک')
-            .replaceAll('ي', 'ی');
+            .replace('ك', 'ک')
+            .replace('ي', 'ی');
     }
 })();
