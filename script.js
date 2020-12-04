@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Details Summary
-// @version      0.0.3
+// @version      0.0.4
 // @downloadURL  https://raw.githubusercontent.com/Tech1Code/details-summary/main/script.js
 // @updateURL    https://raw.githubusercontent.com/Tech1Code/details-summary/main/script.js   
 // @match        https://prkar.mcls.gov.ir/apps/tasklist/inbox/task?taskId=*
@@ -56,6 +56,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     var column1 = document.createElement('div');
     var column2 = document.createElement('div');
     var textArea = document.createElement('textarea');
+    var textAreaLabel = document.createElement('label');
     var textAreaComponent = document.createElement('div');
     var getButton = document.createElement('button');
     getButton.addEventListener('click', function (event) { return getDetails(); });
@@ -79,9 +80,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     // textarea component
     textAreaComponent.classList.add('formio-component');
     row1.appendChild(textAreaComponent);
-    // adds text area
+    // adds text area and text area label
     textArea.disabled = true;
+    textArea.id = 'summarization-textarea';
+    textAreaLabel.htmlFor = 'textArea.id';
+    textAreaLabel.textContent = 'خلاصه متنی';
+    textAreaLabel.classList.add('control-label');
     textArea.classList.add('form-control');
+    textAreaComponent.appendChild(textAreaLabel);
     textAreaComponent.appendChild(textArea);
     // row 1
     cardBody.appendChild(row1);
@@ -115,11 +121,23 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     // });
     function getDetails() {
         return __awaiter(this, void 0, void 0, function () {
-            var content, e_1;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var titles, values, summaryColumns, _i, summaryColumns_1, column, i, div, label, input, _a, summaryColumns_2, column, e_1;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
-                        content = [
+                        titles = [
+                            'نام',
+                            'شماره بیمه',
+                            'نظر کارشناس اداره کار',
+                            'علت بیکاری',
+                            'تاریخ شروع بیکاری',
+                            'کد ملی',
+                            'تلفن همراه',
+                            'تعداد افراد تحت تکفل',
+                            'شماره شبا',
+                            'بانک عامل',
+                        ];
+                        values = [
                             document.querySelector('#firstName').value + " " + document.querySelector('#lastName').value,
                             document.querySelector('#insuranceNumber').value,
                             document.querySelector('#eevpnmp div.form-group > div:nth-child(1) label input').checked
@@ -133,25 +151,69 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
                             new Date(document.querySelector('#unemployStart').value).toLocaleDateString("fa-IR", { year: 'numeric', month: '2-digit', day: '2-digit' }),
                             document.querySelector('#ptidNationalCd').value,
                             document.querySelector('#mobileNumber').value,
+                            document.querySelector('#dependants').value,
                             document.querySelector('#shabaNumber').value,
                             document.querySelector('#bank').value,
-                        ].join('\t');
-                        if (content.length === 0) {
+                        ];
+                        if (values.length === 0) {
                             displayMessage('خطا در استخراج اطلاعات', false);
                             return [2 /*return*/];
                         }
-                        content = fixLocale(content);
-                        textArea.textContent = content;
-                        _a.label = 1;
+                        summaryColumns = [
+                            document.createElement('div'),
+                            document.createElement('div'),
+                            document.createElement('div'),
+                            document.createElement('div'),
+                            document.createElement('div'),
+                        ];
+                        for (_i = 0, summaryColumns_1 = summaryColumns; _i < summaryColumns_1.length; _i++) {
+                            column = summaryColumns_1[_i];
+                            column.classList.add('col', 'col-sm-2', 'col-sm-offset-0', 'col-sm-push-0', 'col-sm-pull-0');
+                        }
+                        summaryColumns[0].classList.replace('col-sm-2', 'col-sm-3');
+                        summaryColumns[3].classList.replace('col-sm-2', 'col-sm-3');
+                        if (titles.length !== values.length) {
+                            console.error('خطای خلاصه سازی: تعداد عناوین با مقادیر یکسان نیست');
+                        }
+                        console.log('نتایج خلاصه سازی');
+                        for (i = 0; i < titles.length; ++i) {
+                            console.log(i, values[i], ': ', titles[i]);
+                            div = document.createElement('div');
+                            label = document.createElement('label');
+                            input = document.createElement('input');
+                            div.classList.add('form-group', 'has-feedback', 'formio-component', 'formio-component-textfield', 'formio-disabled-input');
+                            input.id = 'summarization-' + i.toString();
+                            input.value = values[i];
+                            input.classList.add('form-control');
+                            input.disabled = true;
+                            if (values[i].length === 0) {
+                                input.style.backgroundColor = 'rgba(47, 17, 255, 0.58)';
+                                input.style.color = 'white';
+                                input.value = '[خالی]';
+                            }
+                            label.classList.add('control-label');
+                            label.htmlFor = input.id;
+                            label.textContent = titles[i];
+                            div.appendChild(label);
+                            div.appendChild(input);
+                            summaryColumns[i % summaryColumns.length].appendChild(div);
+                        }
+                        textArea.textContent = fixLocale(values.join('\t'));
+                        for (_a = 0, summaryColumns_2 = summaryColumns; _a < summaryColumns_2.length; _a++) {
+                            column = summaryColumns_2[_a];
+                            textAreaComponent.appendChild(column);
+                        }
+                        textArea.style.marginBottom = '20px';
+                        _b.label = 1;
                     case 1:
-                        _a.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, navigator.clipboard.writeText(content)];
+                        _b.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, navigator.clipboard.writeText(textArea.textContent)];
                     case 2:
-                        _a.sent();
+                        _b.sent();
                         displayMessage('اطلاعات دریافت و کپی شد', true);
                         return [3 /*break*/, 4];
                     case 3:
-                        e_1 = _a.sent();
+                        e_1 = _b.sent();
                         displayMessage('خطا در کپی', false);
                         return [3 /*break*/, 4];
                     case 4: return [2 /*return*/];
