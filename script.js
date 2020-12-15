@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Details Summary
-// @version      0.0.4.1
+// @version      0.0.5
 // @downloadURL  https://raw.githubusercontent.com/Tech1Code/details-summary/main/script.js
 // @updateURL    https://raw.githubusercontent.com/Tech1Code/details-summary/main/script.js   
 // @match        https://prkar.mcls.gov.ir/apps/tasklist/inbox/task?taskId=*
@@ -120,10 +120,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     rtl.insertBefore(form, rtl.firstChild);
     // });
     function getDetails() {
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o;
         return __awaiter(this, void 0, void 0, function () {
-            var titles, values, summaryColumns, _i, summaryColumns_1, column, i, div, label, input, _a, summaryColumns_2, column, e_1;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            var titles, values, summaryColumns, _i, summaryColumns_1, column, i, div, label, input, _p, summaryColumns_2, column, e_1;
+            return __generator(this, function (_q) {
+                switch (_q.label) {
                     case 0:
                         titles = [
                             'نام',
@@ -138,22 +139,19 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
                             'بانک عامل',
                         ];
                         values = [
-                            fixLocale(document.querySelector('#firstName').value) + " " + fixLocale(document.querySelector('#lastName').value),
-                            fixLocale(document.querySelector('#insuranceNumber').value),
-                            document.querySelector('#eevpnmp div.form-group > div:nth-child(1) label input').checked
-                                ? 'موافق'
-                                : (document.querySelector('#eevpnmp div.form-group > div:nth-child(2) label input').checked
-                                    ? 'مخالف'
-                                    : (document.querySelector('#eevpnmp div.form-group > div:nth-child(3) label input').checked
-                                        ? 'نقص مدرک'
+                            fixLocale((_a = document.querySelector('#firstName')) === null || _a === void 0 ? void 0 : _a.value) + " " + fixLocale((_b = document.querySelector('#lastName')) === null || _b === void 0 ? void 0 : _b.value),
+                            fixLocale((_c = document.querySelector('#insuranceNumber')) === null || _c === void 0 ? void 0 : _c.value),
+                            ((_d = document.querySelector('#eevpnmp div.form-group > div:nth-child(1) label input')) === null || _d === void 0 ? void 0 : _d.checked) ? 'موافق'
+                                : (((_e = document.querySelector('#eevpnmp div.form-group > div:nth-child(2) label input')) === null || _e === void 0 ? void 0 : _e.checked) ? 'مخالف'
+                                    : (((_f = document.querySelector('#eevpnmp div.form-group > div:nth-child(3) label input')) === null || _f === void 0 ? void 0 : _f.checked) ? 'نقص مدرک'
                                         : 'عدم اعلام نظر')),
-                            fixLocale(document.querySelector('div.formio-component-causeOfLosingJob div span').textContent),
-                            fixLocale(new Date(document.querySelector('#unemployStart').value).toLocaleDateString("fa-IR", { year: 'numeric', month: '2-digit', day: '2-digit' })),
-                            fixLocale(document.querySelector('#ptidNationalCd').value),
-                            fixLocale(document.querySelector('#mobileNumber').value),
-                            fixLocale(document.querySelector('#dependants').value),
-                            fixLocale(document.querySelector('#shabaNumber').value),
-                            fixLocale(document.querySelector('#bank').value)
+                            fixLocale((_g = document.querySelector('div.formio-component-causeOfLosingJob div span')) === null || _g === void 0 ? void 0 : _g.textContent),
+                            fixLocale(new Date((_h = document.querySelector('#unemployStart')) === null || _h === void 0 ? void 0 : _h.value).toLocaleDateString("fa-IR", { year: 'numeric', month: '2-digit', day: '2-digit' })),
+                            fixLocale((_j = document.querySelector('#ptidNationalCd')) === null || _j === void 0 ? void 0 : _j.value),
+                            fixLocale((_k = document.querySelector('#mobileNumber')) === null || _k === void 0 ? void 0 : _k.value),
+                            fixLocale((_l = document.querySelector('#dependants')) === null || _l === void 0 ? void 0 : _l.value),
+                            fixLocale((_m = document.querySelector('#shabaNumber')) === null || _m === void 0 ? void 0 : _m.value),
+                            fixLocale((_o = document.querySelector('#bank')) === null || _o === void 0 ? void 0 : _o.value)
                                 .replace('بانک ', '')
                                 .replace('رفاه کارگران', 'رفاه'),
                         ];
@@ -188,7 +186,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
                             input.value = values[i];
                             input.classList.add('form-control');
                             input.disabled = true;
-                            if (values[i].length === 0) {
+                            if (values[i] === undefined || values[i] === null || values[i].length === 0) {
                                 input.style.backgroundColor = 'rgba(47, 17, 255, 0.58)';
                                 input.style.color = 'white';
                                 input.value = '[خالی]';
@@ -201,21 +199,21 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
                             summaryColumns[i % summaryColumns.length].appendChild(div);
                         }
                         textArea.textContent = fixLocale(values.join('\t'));
-                        for (_a = 0, summaryColumns_2 = summaryColumns; _a < summaryColumns_2.length; _a++) {
-                            column = summaryColumns_2[_a];
+                        for (_p = 0, summaryColumns_2 = summaryColumns; _p < summaryColumns_2.length; _p++) {
+                            column = summaryColumns_2[_p];
                             textAreaComponent.appendChild(column);
                         }
                         textArea.style.marginBottom = '20px';
-                        _b.label = 1;
+                        _q.label = 1;
                     case 1:
-                        _b.trys.push([1, 3, , 4]);
+                        _q.trys.push([1, 3, , 4]);
                         return [4 /*yield*/, navigator.clipboard.writeText(textArea.textContent)];
                     case 2:
-                        _b.sent();
+                        _q.sent();
                         displayMessage('اطلاعات دریافت و کپی شد', true);
                         return [3 /*break*/, 4];
                     case 3:
-                        e_1 = _b.sent();
+                        e_1 = _q.sent();
                         displayMessage('خطا در کپی', false);
                         return [3 /*break*/, 4];
                     case 4: return [2 /*return*/];
@@ -239,9 +237,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         msgEl.textContent = msg;
     }
     function fixLocale(str) {
-        return str
-            .replace(/[۰-۹]/g, function (w) { return (w.charCodeAt(0) - 0x06f0).toString(); })
-            .replace('ك', 'ک')
-            .replace('ي', 'ی');
+        var _a, _b;
+        return (_b = (_a = str === null || str === void 0 ? void 0 : str.replace(/[۰-۹]/g, function (w) { return (w.charCodeAt(0) - 0x06f0).toString(); })) === null || _a === void 0 ? void 0 : _a.replace('ك', 'ک')) === null || _b === void 0 ? void 0 : _b.replace('ي', 'ی');
     }
 })();
